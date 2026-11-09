@@ -1,5 +1,8 @@
 # Kafka: исправленное решение по пяти пунктам задания
 
+Опубликованный проект: [KuleshovAP/kuber](https://github.com/KuleshovAP/kuber).
+Файл для сдачи с исходниками и журналами: [SOLUTION.md](SOLUTION.md).
+
 ## Структура
 
 ```text
@@ -25,6 +28,7 @@ homework_kafka_fixed/
 ├── .gitignore
 ├── README.md
 ├── build_report.py
+├── repository.json
 ├── SOLUTION.md
 └── evidence/
 ```

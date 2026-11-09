@@ -9,9 +9,11 @@
 3. Добавлен **kafka-demo-deployment.yaml** с **kind: Deployment**. Приложение имеет постоянный режим и readiness после реального обмена.
 4. Требуемая среда — Kubernetes, включённый в интерфейсе **Docker Desktop**, контекст **docker-desktop**. Прежний отдельный kind-кластер не считается подтверждением этого пункта.
 
-## Публикация: обязательный пункт ещё не завершён
+## Репозиторий
 
-Целевой репозиторий: https://github.com/KuleshovAP/kuber. Для push ожидается авторизация с правом записи. ZIP или локальный Git не выдаются за выполненную публикацию. До публикации комплект не следует считать полностью готовым к пересдаче.
+[Проект](https://github.com/KuleshovAP/kuber)
+
+Commit: `16ada2876f3f4c704af35281e4f0e8eee110a5e0`.
 
 ## Подтверждение запуска
 
@@ -901,6 +903,9 @@ __pycache__/
 ````text
 # Kafka: исправленное решение по пяти пунктам задания
 
+Опубликованный проект: [KuleshovAP/kuber](https://github.com/KuleshovAP/kuber).
+Файл для сдачи с исходниками и журналами: [SOLUTION.md](SOLUTION.md).
+
 ## Структура
 
 ```text
@@ -926,6 +931,7 @@ homework_kafka_fixed/
 ├── .gitignore
 ├── README.md
 ├── build_report.py
+├── repository.json
 ├── SOLUTION.md
 └── evidence/
 ```
@@ -1114,8 +1120,8 @@ if __name__ == '__main__':
 ````text
 {
   "url": "https://github.com/KuleshovAP/kuber",
-  "published": false,
-  "commit": null
+  "published": true,
+  "commit": "16ada2876f3f4c704af35281e4f0e8eee110a5e0"
 }
 
 ````
