@@ -13,11 +13,29 @@
 
 [Проект](https://github.com/KuleshovAP/kuber)
 
-Commit: `16ada2876f3f4c704af35281e4f0e8eee110a5e0`.
+Commit с проверенными исходниками: `16ada2876f3f4c704af35281e4f0e8eee110a5e0`. Отчёт дополняется отдельными документационными commit.
+
+GitHub Actions: [подтверждённый запуск](https://github.com/KuleshovAP/kuber/actions/runs/42649184940), результат **success**.
 
 ## Подтверждение запуска
 
 Только журналы **этой версии** ниже подтверждают выполненные проверки. Включение настройки без Ready Deployment не считается успешным запуском приложения.
+
+### evidence/ci-run.json
+
+````text
+{
+  "id": 42649184940,
+  "html_url": "https://github.com/KuleshovAP/kuber/actions/runs/42649184940",
+  "name": "Kafka application CI",
+  "head_sha": "16ada2876f3f4c704af35281e4f0e8eee110a5e0",
+  "status": "completed",
+  "conclusion": "success",
+  "created_at": "2026-11-09T15:53:27Z",
+  "updated_at": "2026-11-09T15:54:11Z"
+}
+
+````
 
 ### evidence/desktop-compose-stop.log
 
@@ -1083,7 +1101,9 @@ def main():
     publication = ROOT / 'repository.json'
     data = json.loads(publication.read_text(encoding='utf-8')) if publication.exists() else {}
     if data.get('published') and data.get('commit'):
-        result += [f'## Репозиторий\n\n[Проект]({data["url"]})\n\nCommit: `{data["commit"]}`.\n\n']
+        result += [f'## Репозиторий\n\n[Проект]({data["url"]})\n\nCommit с проверенными исходниками: `{data["commit"]}`. Отчёт дополняется отдельными документационными commit.\n\n']
+        if data.get('ci_url'):
+            result += [f'GitHub Actions: [подтверждённый запуск]({data["ci_url"]}), результат **{data["ci_conclusion"]}**.\n\n']
     else:
         result += ['## Публикация: обязательный пункт ещё не завершён\n\n',
                    f'Целевой репозиторий: {data.get("url", "не указан")}. Для push ожидается авторизация с правом записи. ZIP или локальный Git не выдаются за выполненную публикацию. До публикации комплект не следует считать полностью готовым к пересдаче.\n\n']
@@ -1121,7 +1141,9 @@ if __name__ == '__main__':
 {
   "url": "https://github.com/KuleshovAP/kuber",
   "published": true,
-  "commit": "16ada2876f3f4c704af35281e4f0e8eee110a5e0"
+  "commit": "16ada2876f3f4c704af35281e4f0e8eee110a5e0",
+  "ci_url": "https://github.com/KuleshovAP/kuber/actions/runs/42649184940",
+  "ci_conclusion": "success"
 }
 
 ````

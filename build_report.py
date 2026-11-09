@@ -39,7 +39,9 @@ def main():
     publication = ROOT / 'repository.json'
     data = json.loads(publication.read_text(encoding='utf-8')) if publication.exists() else {}
     if data.get('published') and data.get('commit'):
-        result += [f'## Репозиторий\n\n[Проект]({data["url"]})\n\nCommit: `{data["commit"]}`.\n\n']
+        result += [f'## Репозиторий\n\n[Проект]({data["url"]})\n\nCommit с проверенными исходниками: `{data["commit"]}`. Отчёт дополняется отдельными документационными commit.\n\n']
+        if data.get('ci_url'):
+            result += [f'GitHub Actions: [подтверждённый запуск]({data["ci_url"]}), результат **{data["ci_conclusion"]}**.\n\n']
     else:
         result += ['## Публикация: обязательный пункт ещё не завершён\n\n',
                    f'Целевой репозиторий: {data.get("url", "не указан")}. Для push ожидается авторизация с правом записи. ZIP или локальный Git не выдаются за выполненную публикацию. До публикации комплект не следует считать полностью готовым к пересдаче.\n\n']
