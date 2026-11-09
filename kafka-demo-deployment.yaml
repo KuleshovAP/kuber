@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka-demo
+  namespace: kafka-homework
+  labels:
+    app: kafka-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kafka-demo
+  template:
+    metadata:
+      labels:
+        app: kafka-demo
+    spec:
+      enableServiceLinks: false
+      containers:
+        - name: kafka-demo
+          image: kafka-homework-app:desktop
+          imagePullPolicy: IfNotPresent
+          command: ['python', '-m', 'app.main', '--continuous', '--interval', '30']
+          env:
+            - name: KAFKA_BROKER
+              value: kafka:9092
+            - name: KAFKA_REPLICATION_FACTOR
+              value: '3'
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi
+          readinessProbe:
+            exec:
+              command: ['test', '-f', '/tmp/kafka-demo-ready']
+            initialDelaySeconds: 2
+            periodSeconds: 3

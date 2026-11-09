@@ -1,0 +1,53 @@
+stages: [test, build, deploy]
+
+unit_tests:
+  stage: test
+  image: python:3.11.11-slim-bookworm
+  script:
+    - pip install -r app/requirements.txt
+    - python -m pytest tests/unit -v
+
+integration_tests:
+  stage: test
+  image: docker:27.5.1-cli
+  services:
+    - name: docker:27.5.1-dind
+      alias: docker
+  variables:
+    DOCKER_HOST: tcp://docker:2375
+    DOCKER_TLS_CERTDIR: ''
+  script:
+    - docker compose up -d --wait kafka
+    - docker compose build app
+    - docker compose run --rm app python -m pytest tests/integration -v
+  after_script:
+    - docker compose logs --no-color > integration.log
+    - docker compose down
+  artifacts:
+    when: always
+    paths: [integration.log]
+
+build:
+  stage: build
+  image: docker:27.5.1-cli
+  services:
+    - name: docker:27.5.1-dind
+      alias: docker
+  variables:
+    DOCKER_HOST: tcp://docker:2375
+    DOCKER_TLS_CERTDIR: ''
+  script:
+    - echo "$CI_REGISTRY_PASSWORD" | docker login "$CI_REGISTRY" --username "$CI_REGISTRY_USER" --password-stdin
+    - docker build -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_SHA" .
+    - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_SHA"
+
+deploy:
+  stage: deploy
+  image:
+    name: alpine/k8s:1.32.2
+    entrypoint: ['']
+  script:
+    - sh deploy_script.sh "$CI_REGISTRY_IMAGE:$CI_COMMIT_SHA"
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+      when: manual

@@ -1,0 +1,7 @@
+.git
+evidence
+tools
+__pycache__
+.pytest_cache
+*.md
+*.tar
